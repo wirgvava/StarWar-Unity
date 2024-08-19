@@ -1,0 +1,4 @@
+repository "StarWar - Mobile Space Shooter@unity_E46603DBC79D5E00175A@cloud"
+  path "/"
+    smartbranch "/main/development" 
+     
