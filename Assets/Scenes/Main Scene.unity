@@ -5287,7 +5287,7 @@ MonoBehaviour:
   heart_half: {fileID: 21300000, guid: e0c195f545fcf498b94c25eee3ebd1ed, type: 3}
   heart_full: {fileID: 21300000, guid: f0f023d9980cc4e659402c0d6926b252, type: 3}
   timer: {fileID: 1869432648}
-  dragToPlayMessage: {fileID: 0}
+  dragToPlayMessage: {fileID: 1136265152}
 --- !u!1001 &1763644833
 PrefabInstance:
   m_ObjectHideFlags: 0

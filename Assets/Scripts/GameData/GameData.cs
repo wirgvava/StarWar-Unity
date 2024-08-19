@@ -8,7 +8,7 @@ public class GameData
     public int ChoosenShip;
     public int PointOfHealth;
     public bool TimerIsActive;
-    public DateTime TimerEndTime;
+    public string TimerEndTime;
     public int UserHighScore;
     public int Money;
     public bool IsSFXEnabled;
@@ -22,7 +22,7 @@ public class GameData
         UserHighScore = userHighScore;
         Money = money;
         TimerIsActive = timerIsActive;
-        TimerEndTime = timerEndTime;
+        TimerEndTime = timerEndTime.ToString("o");
         IsSFXEnabled = isSFXEnabled;
         IsMusicEnabled = isMusicEnabled;
         UnlockedShips = unlockedShips ?? new List<int>();

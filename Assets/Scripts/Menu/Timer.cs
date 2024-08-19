@@ -10,41 +10,39 @@ public class Timer : MonoBehaviour
 
     void Update()
     {
-        // Check if PointOfHealth is 0 and the timer is not already active
-        if (GameController.PointOfHealth == 0 && GameController.TimerIsActive)
+        if (GameController.PointOfHealth == 0 && GameController.healthIsEmpty)
         {
             StartHealthRecoveryTimer();
-            Debug.Log("HEALTH RECOVERY TIMER IS ACTIVE");
         }
+
 
         // Update the timer display if the timer is active
         if (GameController.TimerIsActive)
         {
             UpdateTimerText();
             CheckTimer();
-            Debug.Log("TIMER UPDATE");
         }
     }
 
     private void StartHealthRecoveryTimer()
     {
-        GameController.TimerEndTime = DateTime.Now.AddHours(2);  // Set the end time to 2 hours from now
-        Debug.Log("TIMER DISABLE TIME: " + GameController.TimerEndTime);
+        GameController.healthIsEmpty = false;
+        DateTime timerStartTime = DateTime.Now;
+        GameController.TimerIsActive = true;
+        GameController.TimerEndTime = timerStartTime.AddHours(2);
+        GameController.SaveGameData();
     }
 
     private void UpdateTimerText()
-    {         // დარჩენილი დრო =           19:30:00          -      17:30:00         =  2:00:00
+    { 
         TimeSpan remainingTime = GameController.TimerEndTime - DateTime.Now;
 
         if (remainingTime.TotalSeconds > 0)
         {
-            // Update the timer text in the format HH:MM:SS
-            timerText.text = string.Format("{0:00}:{0:00}:{0:00}",
+            timerText.text = string.Format("{0:00}:{1:00}:{2:00}",
                 remainingTime.Hours,
                 remainingTime.Minutes,
                 remainingTime.Seconds);
-
-            Debug.Log("TIMER FORMAT: " + timerText.text);
         }
         else
         {
@@ -53,13 +51,12 @@ public class Timer : MonoBehaviour
     }
 
     private void CheckTimer()
-    {     
+    {    
         if (DateTime.Now >= GameController.TimerEndTime)
         {
             GameController.PointOfHealth = 6;
             GameController.TimerIsActive = false;
             GameController.SaveGameData();
-            Debug.Log("HEALTH IS RESTORED");
         }
     }
 

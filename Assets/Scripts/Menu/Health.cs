@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
-// using Microsoft.Unity.VisualStudio.Editor;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
+using System;
 
 public class Health : MonoBehaviour
 {
@@ -34,6 +35,7 @@ public class Health : MonoBehaviour
             heart_2.sprite = heart_empty;
             heart_3.sprite = heart_empty;
             Player.isPlayable = false;
+            timer.SetActive(true);
             break;
 
             case 1:
@@ -41,6 +43,7 @@ public class Health : MonoBehaviour
             heart_2.sprite = heart_empty;
             heart_3.sprite = heart_half;
             Player.isPlayable = true;
+            timer.SetActive(false);
             break;
 
             case 2:
@@ -48,6 +51,7 @@ public class Health : MonoBehaviour
             heart_2.sprite = heart_empty;
             heart_3.sprite = heart_full;
             Player.isPlayable = true;
+            timer.SetActive(false);
             break;
 
             case 3:
@@ -55,6 +59,7 @@ public class Health : MonoBehaviour
             heart_2.sprite = heart_half;
             heart_3.sprite = heart_full;
             Player.isPlayable = true;
+            timer.SetActive(false);
             break;
 
             case 4:
@@ -62,6 +67,7 @@ public class Health : MonoBehaviour
             heart_2.sprite = heart_full;
             heart_3.sprite = heart_full;
             Player.isPlayable = true;
+            timer.SetActive(false);
             break;
 
             case 5:
@@ -69,6 +75,7 @@ public class Health : MonoBehaviour
             heart_2.sprite = heart_full;
             heart_3.sprite = heart_full;
             Player.isPlayable = true;
+            timer.SetActive(false);
             break;
 
             case 6:
@@ -76,10 +83,10 @@ public class Health : MonoBehaviour
             heart_2.sprite = heart_full;
             heart_3.sprite = heart_full;
             Player.isPlayable = true;
+            timer.SetActive(false);
             break;
         }
 
-        timer.SetActive(GameController.TimerIsActive);
         dragToPlayMessage.SetActive(!GameController.TimerIsActive);
     }
 }
