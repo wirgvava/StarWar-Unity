@@ -4,6 +4,14 @@ using UnityEngine;
 using TMPro;
 using System;
 
+#if UNITY_ANDROID
+using Unity.Notifications.Android;
+#endif
+
+#if UNITY_IOS
+using Unity.Notifications.iOS;
+#endif
+
 public class Timer : MonoBehaviour
 {
     public TextMeshProUGUI timerText;
@@ -29,8 +37,9 @@ public class Timer : MonoBehaviour
         GameController.healthIsEmpty = false;
         DateTime timerStartTime = DateTime.Now;
         GameController.TimerIsActive = true;
-        GameController.TimerEndTime = timerStartTime.AddMinutes(1);
+        GameController.TimerEndTime = timerStartTime.AddHours(2);
         GameController.SaveGameData();
+        ScheduleHealthRestoredNotification();
     }
 
     private void UpdateTimerText()
@@ -59,6 +68,46 @@ public class Timer : MonoBehaviour
             GameController.TimerIsActive = false;
             GameController.SaveGameData();
         }
+    }
+
+    private void ScheduleHealthRestoredNotification()
+    {
+        // Android notification
+        #if UNITY_ANDROID
+        if (Application.platform == RuntimePlatform.Android)
+        {
+            var notification = new AndroidNotification
+            {
+                Title = "Pew Pew",
+                Text = "🚀 Time to shoot 👾",
+                SmallIcon = "AppIcon_Android_Notification",
+                FireTime = DateTime.Now.AddHours(2)
+            };
+            AndroidNotificationCenter.SendNotification(notification, "health_channel");
+        }
+        #endif
+
+        // iOS notification
+        #if UNITY_IOS
+        if (Application.platform == RuntimePlatform.IPhonePlayer)
+        {
+            var notification = new iOSNotification
+            {
+                Identifier = "_health_full",
+                Title = "Pew Pew",
+                Body = "🚀 Time to shoot 👾",
+                ShowInForeground = true,
+                ForegroundPresentationOption = (PresentationOption.Alert | PresentationOption.Sound),
+                SoundName = "notification.wav",
+                Trigger = new iOSNotificationTimeIntervalTrigger()
+                {
+                    TimeInterval = new TimeSpan(2, 0, 0),
+                    Repeats = false
+                }
+            };
+            iOSNotificationCenter.ScheduleNotification(notification);
+        }
+        #endif
     }
 
 
