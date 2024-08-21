@@ -17,12 +17,17 @@ public class AddHighScore : MonoBehaviour
     {
         if (!string.IsNullOrEmpty(nameField.text))
         {
+            SFXSoundController.buttonIsClicked = true;
             menu.SetActive(true);
             this.gameObject.SetActive(false);
             Firestore firestore = new Firestore();
             await firestore.AddTopScore(nameField.text, ScoreManager.score);
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             Debug.Log("Top Score added successfully");
+        }
+        else 
+        {
+            SFXSoundController.isErrorPresented = true;
         }
     }
 }

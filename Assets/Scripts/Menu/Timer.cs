@@ -29,7 +29,7 @@ public class Timer : MonoBehaviour
         GameController.healthIsEmpty = false;
         DateTime timerStartTime = DateTime.Now;
         GameController.TimerIsActive = true;
-        GameController.TimerEndTime = timerStartTime.AddHours(2);
+        GameController.TimerEndTime = timerStartTime.AddMinutes(1);
         GameController.SaveGameData();
     }
 
@@ -54,6 +54,7 @@ public class Timer : MonoBehaviour
     {    
         if (DateTime.Now >= GameController.TimerEndTime)
         {
+            SFXSoundController.healthIsRestored = true;
             GameController.PointOfHealth = 6;
             GameController.TimerIsActive = false;
             GameController.SaveGameData();
@@ -65,5 +66,6 @@ public class Timer : MonoBehaviour
     public void WatchAd()
     {
         // TODO: Watch ad logic
+        SFXSoundController.buttonIsClicked = true;
     }
 }

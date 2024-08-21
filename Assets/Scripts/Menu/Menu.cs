@@ -60,18 +60,21 @@ public class Menu : MonoBehaviour
     // Button actions 
     public void OpenMarket()
     {
+        SFXSoundController.buttonIsClicked = true;
         menu.SetActive(false);
         market.SetActive(true);
     }
 
     public void OpenLeaderboard()
     {
+        SFXSoundController.buttonIsClicked = true;
         menu.SetActive(false);
         leaderboard.SetActive(true);
     }
 
     public void OpenSettings()
     {
+        SFXSoundController.buttonIsClicked = true;
         menu.SetActive(false);
         settings.SetActive(true);
     }

@@ -47,6 +47,11 @@ public class Market : MonoBehaviour
             player.ships[indexOfChoosenShip].SetActive(false); // turn off current ship before activate previous one
             player.ships[indexOfChoosenShip - 1].SetActive(true); // turn on previous ship
             indexOfChoosenShip -= 1;
+            SFXSoundController.buttonIsClicked = true;
+        }
+        else
+        {
+            SFXSoundController.isErrorPresented = true;
         }
     }
 
@@ -57,6 +62,11 @@ public class Market : MonoBehaviour
             player.ships[indexOfChoosenShip].SetActive(false); // turn off current ship before activate next one
             player.ships[indexOfChoosenShip + 1].SetActive(true); // turn on next ship
             indexOfChoosenShip += 1;
+            SFXSoundController.buttonIsClicked = true;
+        }
+        else
+        {
+            SFXSoundController.isErrorPresented = true;
         }
     }
 
@@ -64,11 +74,13 @@ public class Market : MonoBehaviour
     {
         if (shipPrices[indexOfChoosenShip] > GameController.Money)
         {
+            SFXSoundController.isErrorPresented = true;
             message.text = "Not Enough Money";
             Invoke("HideMessage", 1.0f);
         }
         else 
         {
+            SFXSoundController.isBought = true;
             GameController.Money -= shipPrices[indexOfChoosenShip];
             GameController.UnlockedShips.Add(indexOfChoosenShip + 1);
             GameController.SaveGameData();
@@ -79,6 +91,7 @@ public class Market : MonoBehaviour
     {
         if (GameController.UnlockedShips.Contains(indexOfChoosenShip + 1))
         {
+            SFXSoundController.buttonIsClicked = true;
             GameController.ChoosenShip = indexOfChoosenShip + 1;
             GameController.SaveGameData();
             menu.SetActive(true);
@@ -86,6 +99,7 @@ public class Market : MonoBehaviour
         }
         else
         {
+            SFXSoundController.isErrorPresented = true;
             message.text = "Choose the ship you own";
             Invoke("HideMessage", 1.0f);
         }

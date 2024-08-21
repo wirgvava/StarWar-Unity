@@ -20,6 +20,7 @@ public class Coins : MonoBehaviour
         }
         else if (collision.tag == "Player")
         {
+            SFXSoundController.isMoneyCollected = true;
             GameController.Money += 20;
             Destroy(this.gameObject);
             Debug.Log("Coin Collected!");

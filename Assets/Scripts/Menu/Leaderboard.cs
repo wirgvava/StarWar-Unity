@@ -16,6 +16,7 @@ public class Leaderboard : MonoBehaviour
     void Start()
     {
         player.SetActive(false);
+        Player.isPlayable = false;
         PopulateLeaderboard();
     }
 
@@ -43,6 +44,8 @@ public class Leaderboard : MonoBehaviour
     // Button action
     public void CloseLeaderboard()
     {
+        SFXSoundController.buttonIsClicked = true;
+        Player.isPlayable = true;
         menu.SetActive(true);
         player.SetActive(true);
         this.gameObject.SetActive(false);

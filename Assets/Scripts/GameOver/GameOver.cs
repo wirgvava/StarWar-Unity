@@ -41,6 +41,7 @@ public class GameOver : MonoBehaviour
     // Button Actions
     public void Restart()
     {
+        SFXSoundController.buttonIsClicked = true;
         Player.isPlaying = false;
         Player.isPlayable = true;
         Player.isGameOver = false;
@@ -51,6 +52,7 @@ public class GameOver : MonoBehaviour
     {
         // TODO: Watch Ad Logic
 
+        SFXSoundController.buttonIsClicked = true;
         gameOverPanel.SetActive(false);
         player.gameObject.SetActive(true);
         Player.isPlaying = true;

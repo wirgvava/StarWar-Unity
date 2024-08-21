@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
+    // Stored Data
     public static int ChoosenShip;
     public static int PointOfHealth;
     public static bool TimerIsActive = false;
@@ -14,8 +15,13 @@ public class GameController : MonoBehaviour
     public static bool IsSFXEnabled;
     public static bool IsMusicEnabled;
     public static List<int> UnlockedShips;
+    // ---------
 
     public static bool healthIsEmpty;
+    // Audio
+    public AudioSource backgroundMusic;
+    public AudioClip soundtrack;
+    public AudioClip inGameSound;
 
     async void Start()
     {
@@ -52,15 +58,69 @@ public class GameController : MonoBehaviour
 
     void Update()
     {
-        if (PointOfHealth == 0 && !TimerIsActive)
-        {
-            healthIsEmpty = true;
-        }
+        CheckForTimer();
+        SwitchClip();
+        CheckMusicAvailablity();
     }
 
     public static void SaveGameData()
     {
         GameData data = new GameData(ChoosenShip, PointOfHealth, UserHighScore, Money,  TimerIsActive, TimerEndTime, IsSFXEnabled, IsMusicEnabled, UnlockedShips);
         GameDataManager.SaveGame(data);
+    }
+
+    // AUDIO
+    public void PlayMusic()
+    {
+        if (!backgroundMusic.isPlaying)
+        {
+            backgroundMusic.Play();
+        }
+    }
+
+    public void StopMusic()
+    {
+        if (backgroundMusic.isPlaying)
+        {
+            backgroundMusic.Pause();
+        }
+    }
+
+    private void SwitchClip()
+    {
+        if (Player.isPlaying)
+        {
+            backgroundMusic.clip = inGameSound;
+        }
+        else if (Player.isGameOver)
+        {
+            backgroundMusic.clip = null;
+        }
+        else 
+        {
+            backgroundMusic.clip = soundtrack;
+        }
+    }
+
+    private void CheckMusicAvailablity()
+    {
+        if (IsMusicEnabled)
+        {
+            PlayMusic();
+        }
+        else
+        {
+            StopMusic();
+        }
+    }
+
+
+    // Timer
+    private void CheckForTimer()
+    {
+        if (PointOfHealth == 0 && !TimerIsActive)
+        {
+            healthIsEmpty = true;
+        }
     }
 }
