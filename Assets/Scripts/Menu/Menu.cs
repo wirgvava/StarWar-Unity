@@ -14,6 +14,9 @@ public class Menu : MonoBehaviour
     public GameObject market;
     public GameObject leaderboard;
     public GameObject settings;
+    public GameObject addHighScorePanel;
+
+    private List<TopScore> topScores = Firestore.topScores;
 
     void Start()
     {
@@ -32,6 +35,7 @@ public class Menu : MonoBehaviour
             ScoreManager.score = 0;
             Player.isPlayable = true;
             Player.isGameOver = false;
+            Player.isAddedHighScoreToLeaderboard = false;
         }
         else 
         {
@@ -41,6 +45,7 @@ public class Menu : MonoBehaviour
         }
         
         CheckForHighScore();
+        CheckForLeaderboardHighScore();
     }
 
     void OnEnable()
@@ -78,6 +83,23 @@ public class Menu : MonoBehaviour
             GameController.UserHighScore = ScoreManager.score;
             GameController.SaveGameData();
             userHighScore.text = ScoreManager.score.ToString();
+        }
+    }
+
+    private void CheckForLeaderboardHighScore()
+    {
+        if (!Player.isPlaying && !Player.isAddedHighScoreToLeaderboard) {
+            foreach (TopScore topScore in topScores)
+            {
+                if (ScoreManager.score > topScore.Score) 
+                {
+                    menu.SetActive(false);
+                    addHighScorePanel.SetActive(true);
+                    Player.isAddedHighScoreToLeaderboard = true;
+                    Player.isPlayable = false; 
+                    break;
+                }
+            }
         }
     }
 }

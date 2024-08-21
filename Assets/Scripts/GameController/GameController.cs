@@ -17,7 +17,7 @@ public class GameController : MonoBehaviour
 
     public static bool healthIsEmpty;
 
-    void Start()
+    async void Start()
     {
         GameData data = GameDataManager.LoadGame();
 
@@ -44,6 +44,9 @@ public class GameController : MonoBehaviour
             IsSFXEnabled = data.IsSFXEnabled;
             IsMusicEnabled = data.IsMusicEnabled;
             UnlockedShips = data.UnlockedShips;
+
+            Firestore firestore = new Firestore();
+            await firestore.GetTopScores();
         }
     }
 

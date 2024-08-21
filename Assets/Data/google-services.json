@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "825797255625",
+    "project_id": "starwar-11dc1",
+    "storage_bucket": "starwar-11dc1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:825797255625:android:e73565a506cd5d2b6b0818",
+        "android_client_info": {
+          "package_name": "ge.kdot.starWarAndroid"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBmLizVuPpmBG3W8-7ZbGxbZGqYfpvns3A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

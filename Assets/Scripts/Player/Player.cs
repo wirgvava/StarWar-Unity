@@ -19,6 +19,7 @@ public class Player : MonoBehaviour
     public static bool isPlaying = false;
     public static bool isPlayable = true;
     public static bool isGameOver = false;
+    public static bool isAddedHighScoreToLeaderboard = false;
 
     void Start()
     {
