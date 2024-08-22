@@ -3,16 +3,24 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using TMPro;
+using GoogleMobileAds.Api;
 
 public class Market : MonoBehaviour
 {
     public GameObject menu;
     public TextMeshProUGUI moneyAmount;
     public GameObject buyButton;
+    public GameObject watchAdButton;
     public TextMeshProUGUI shipPrice;
     public TextMeshProUGUI message;
     private Player player;
     private int indexOfChoosenShip = 0;
+    private Vector3 buyButtonVectors;
+    private Vector3 watchAdButonVectors;
+    
+    // Ad
+    private RewardedAd rewardedAd;
+    private bool isAdAlreadyShown = false;
 
     List<int> shipPrices = new List<int> { 0, 550, 850, 1000, 1500, 2000 };
 
@@ -22,6 +30,9 @@ public class Market : MonoBehaviour
         player = GameObject.FindWithTag("Player").GetComponent<Player>();
         indexOfChoosenShip = GameController.ChoosenShip - 1;
         message.text = "";
+        buyButtonVectors = buyButton.transform.position;
+        watchAdButonVectors = watchAdButton.transform.position;
+        LoadRewardedAd();
     }
 
     void Update()
@@ -37,6 +48,7 @@ public class Market : MonoBehaviour
 
         moneyAmount.text = GameController.Money.ToString();
         ShipPrices();
+        customizeUI();
     }
 
     // BUTTON ACTIONS
@@ -70,6 +82,7 @@ public class Market : MonoBehaviour
         }
     }
 
+    // Buttons 
     public void BuyAction()
     {
         if (shipPrices[indexOfChoosenShip] > GameController.Money)
@@ -85,6 +98,26 @@ public class Market : MonoBehaviour
             GameController.UnlockedShips.Add(indexOfChoosenShip + 1);
             GameController.SaveGameData();
         }
+    }
+
+    public void WatchAdButton()
+    {
+        SFXSoundController.buttonIsClicked = true;
+        
+        AdMobManager.ShowRewardedAd(
+            (Reward reward) =>
+            {
+                isAdAlreadyShown = true;
+                watchAdButton.SetActive(false);
+                GameController.Money += 50;
+                GameController.SaveGameData();
+                Debug.Log("Ad completed. User rewarded with: " + reward.Amount);
+            },
+            (string error) =>
+            {
+                Debug.LogError("Failed to show ad: " + error);
+            }
+        );
     }
 
     public void CloseButtonAction()
@@ -134,6 +167,69 @@ public class Market : MonoBehaviour
             case 5:
             shipPrice.text = shipPrices[5].ToString();
             break;
+        }
+    }
+
+    // Load Ad
+    private void LoadRewardedAd()
+    {
+        AdMobManager.LoadRewardedAd(
+            (RewardedAd ad) =>
+            {
+                rewardedAd = ad;
+                Debug.Log("Rewarded ad is loaded and ready to be shown.");
+            },
+            (string error) =>
+            {
+                Debug.LogError("Failed to load rewarded ad: " + error);
+            }
+        );
+    }
+
+     void customizeUI()
+    {
+        if (isAdAlreadyShown)
+        {
+            watchAdButton.SetActive(false);
+        }
+        else
+        {
+            watchAdButton.SetActive(true);
+        }
+
+
+        if (watchAdButton.activeInHierarchy && buyButton.activeInHierarchy)
+        {
+            buyButton.transform.position = new Vector3
+            (
+                buyButtonVectors.x - 250, 
+                buyButtonVectors.y, 
+                buyButtonVectors.z
+            );
+            watchAdButton.transform.position = new Vector3
+            (
+                watchAdButonVectors.x + 250, 
+                watchAdButonVectors.y, 
+                watchAdButonVectors.z
+            );
+        }
+        else if (watchAdButton.activeInHierarchy && !buyButton.activeInHierarchy)
+        {
+            watchAdButton.transform.position = new Vector3
+            (
+                watchAdButonVectors.x,
+                watchAdButonVectors.y, 
+                watchAdButonVectors.z
+            );
+        }
+        else if(!watchAdButton.activeInHierarchy && buyButton.activeInHierarchy)
+        {
+            buyButton.transform.position = new Vector3
+            (
+                buyButtonVectors.x,
+                buyButtonVectors.y, 
+                buyButtonVectors.z
+            );
         }
     }
 }

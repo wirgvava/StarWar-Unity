@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using GoogleMobileAds.Api;
 
 public class GameController : MonoBehaviour
 {
@@ -23,8 +24,9 @@ public class GameController : MonoBehaviour
     public AudioClip soundtrack;
     public AudioClip inGameSound;
 
-    async void Start()
+    public async void Start()
     {
+        AdMobInit();
         GameData data = GameDataManager.LoadGame();
 
         if (data != null)
@@ -122,5 +124,14 @@ public class GameController : MonoBehaviour
         {
             healthIsEmpty = true;
         }
+    }
+
+
+    // ADMOB INIT
+    private void AdMobInit()
+    {
+        MobileAds.Initialize(initStatus => { 
+            Debug.Log("AdMob is Initialized");
+        });
     }
 }

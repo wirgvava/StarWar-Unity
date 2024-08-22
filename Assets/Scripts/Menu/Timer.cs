@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using System;
+using GoogleMobileAds.Api;
 
 #if UNITY_ANDROID
 using Unity.Notifications.Android;
@@ -16,10 +17,14 @@ public class Timer : MonoBehaviour
 {
     public TextMeshProUGUI timerText;
 
+    // AD
+    private RewardedAd rewardedAd;
+
     void Update()
     {
         if (GameController.PointOfHealth == 0 && GameController.healthIsEmpty)
         {
+            LoadRewardedAd();
             StartHealthRecoveryTimer();
         }
 
@@ -114,7 +119,38 @@ public class Timer : MonoBehaviour
     // BUTTON ACTION
     public void WatchAd()
     {
-        // TODO: Watch ad logic
         SFXSoundController.buttonIsClicked = true;
+
+        AdMobManager.ShowRewardedAd(
+            (Reward reward) =>
+            {
+                SFXSoundController.healthIsRestored = true;
+                GameController.PointOfHealth = 6;
+                GameController.TimerIsActive = false;
+                GameController.SaveGameData();
+
+                Debug.Log("Ad completed. User rewarded with: " + reward.Amount);
+            },
+            (string error) =>
+            {
+                Debug.LogError("Failed to show ad: " + error);
+            }
+        );
+    }
+
+    // Load Ad
+    private void LoadRewardedAd()
+    {
+        AdMobManager.LoadRewardedAd(
+            (RewardedAd ad) =>
+            {
+                rewardedAd = ad;
+                Debug.Log("Rewarded ad is loaded and ready to be shown.");
+            },
+            (string error) =>
+            {
+                Debug.LogError("Failed to load rewarded ad: " + error);
+            }
+        );
     }
 }
