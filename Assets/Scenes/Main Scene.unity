@@ -1269,6 +1269,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   backgroundSpeed: 0.5
+  speedIncrement: 0.1
+  interval: 10
   backgroundRenderer: {fileID: 258093279}
 --- !u!23 &258093279
 MeshRenderer:
@@ -1465,6 +1467,7 @@ GameObject:
   - component: {fileID: 289160097}
   - component: {fileID: 289160096}
   - component: {fileID: 289160095}
+  - component: {fileID: 289160098}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1546,6 +1549,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 331007522}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &289160098
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 289160094}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d456ae9b73bd94b658c6b40ea6a46b63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startColor: {r: 0.14901961, g: 0.1254902, b: 0.20784314, a: 1}
+  endColor: {r: 0, g: 0, b: 0, a: 1}
+  duration: 100
 --- !u!1 &289392834
 GameObject:
   m_ObjectHideFlags: 0
@@ -1990,7 +2008,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40a375ec05eae451e902cf350ef2df1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cameraSpeed: 5
+  speedIncrement: 2
+  interval: 10
 --- !u!114 &331007524
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4755,7 +4774,7 @@ MonoBehaviour:
   bullet_4: {fileID: 8659009253339552476, guid: e192646a815a548e28c5b4206d536726, type: 3}
   bullet_5: {fileID: 4203901802325646061, guid: af298c1f1f08b40a4b3d936b863e5fcb, type: 3}
   bullet_6: {fileID: 1067646400442592387, guid: 7cbef8b2fb6e04692af3696bae470f93, type: 3}
-  timeBetweenSpawn: 0.1
+  timeBetweenSpawn: 0.05
 --- !u!1 &921607598
 GameObject:
   m_ObjectHideFlags: 0

@@ -4,10 +4,15 @@ using UnityEngine;
 
 public class Bullets : MonoBehaviour
 {
+    public float cameraSpeed = 10f;
+    public float speedIncrement = 2f;
+    public float interval = 10f;
+
     // Update is called once per frame
     void Update()
     {
-        transform.Translate(Vector3.up * 10f * Time.deltaTime);
+        this.cameraSpeed = CameraMovement.cameraSpeed + 5f;
+        transform.Translate(Vector3.up * cameraSpeed * Time.deltaTime);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
