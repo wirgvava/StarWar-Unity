@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Net.NetworkInformation;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -10,6 +11,7 @@ public class Player : MonoBehaviour
     public GameObject ship_4;
     public GameObject ship_5;
     public GameObject ship_6;
+    public Animator animator;
 
     public GameObject[] ships;
 
@@ -63,6 +65,8 @@ public class Player : MonoBehaviour
                 }
             }
         }
+
+        animator.enabled = !isPlaying;
     }
 
     private void SetActiveCurrentShip()

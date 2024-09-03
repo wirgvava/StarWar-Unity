@@ -14,8 +14,6 @@ public class Leaderboard : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        player.SetActive(false);
-        Player.isPlayable = false;
         PopulateLeaderboard();
     }
 
@@ -44,9 +42,7 @@ public class Leaderboard : MonoBehaviour
     public void CloseLeaderboard()
     {
         SFXSoundController.buttonIsClicked = true;
-        Player.isPlayable = true;
         menu.SetActive(true);
-        player.SetActive(true);
         this.gameObject.SetActive(false);
     }
 }
