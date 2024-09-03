@@ -15,6 +15,9 @@ public class Player : MonoBehaviour
 
     public float speed = 50f;
     public float offsetY = 0.5f;
+    private Vector3 touchOffset;
+    private bool isDragging = false;
+
 
     public static bool isPlaying = false;
     public static bool isPlayable = true;
@@ -31,27 +34,32 @@ public class Player : MonoBehaviour
     {
         if (isPlayable)
         {
-            // Check for touch input
             if (Input.touchCount > 0)
             {
                 Touch touch = Input.GetTouch(0);
-
-                // Move the player towards the touch position
                 Vector3 touchPos = Camera.main.ScreenToWorldPoint(touch.position);
                 touchPos.z = 0f;
-                touchPos.y += offsetY;
 
-
-                // Cast a ray from the touch position
-                RaycastHit2D hit = Physics2D.Raycast(touchPos, Vector2.zero);
-
-                if (hit.collider != null)
+                if (touch.phase == TouchPhase.Began)
                 {
-                    if (hit.collider.CompareTag("Player"))
+                    RaycastHit2D hit = Physics2D.Raycast(touchPos, Vector2.zero);
+                    if (hit.collider != null && hit.collider.CompareTag("Player"))
                     {
                         isPlaying = true;
-                        transform.position = Vector3.MoveTowards(transform.position, touchPos, speed * Time.deltaTime);
+                        isDragging = true;
+                        touchOffset = transform.position - touchPos;
+                        touchOffset.z = 0f; // Maintain the same z-axis position
+                        touchOffset.y += offsetY; // Adjust for offset above the finger
                     }
+                }
+                else if (touch.phase == TouchPhase.Moved && isDragging)
+                {
+                    Vector3 newPos = touchPos + touchOffset;
+                    transform.position = Vector3.MoveTowards(transform.position, newPos, speed * Time.deltaTime);
+                }
+                else if (touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled)
+                {
+                    isDragging = false;
                 }
             }
         }
