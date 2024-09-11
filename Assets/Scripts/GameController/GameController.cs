@@ -26,7 +26,6 @@ public class GameController : MonoBehaviour
 
     public async void Start()
     {
-        GameDataManager.DeleteGameData();
         AdMobInit();
         GameData data = GameDataManager.LoadGame();
 

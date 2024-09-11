@@ -38,7 +38,7 @@ public static class GameDataManager
             else
             {
                 Debug.LogWarning("No game data file found. Returning new data.");
-                return new GameData(1, 6, 0, 0,  false, DateTime.Now, true, true, new List<int> {1,2,3,4,5,6}); // Default data if no file found
+                return new GameData(1, 6, 0, 0,  false, DateTime.Now, true, true, new List<int> {1}); // Default data if no file found
             }
         }
         catch (Exception ex)
