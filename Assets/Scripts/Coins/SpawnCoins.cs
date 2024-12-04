@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class SpawnCoins : MonoBehaviour
 {
@@ -14,12 +15,14 @@ public class SpawnCoins : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Player.isPlaying)
-        {
-            if (Time.time > spawnTime)
+        if (ScoreManager.score > 200){
+            if (Player.isPlaying)
             {
-                Spawn();
-                spawnTime = Time.time + timeBetweenSpawn;
+                if (Time.time > spawnTime)
+                {
+                    Spawn();
+                    spawnTime = Time.time + timeBetweenSpawn;
+                }
             }
         }
     }

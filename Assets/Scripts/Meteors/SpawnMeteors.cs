@@ -13,12 +13,14 @@ public class SpawnMeteors : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Player.isPlaying)
-        {
-            if (Time.time > spawnTime)
+        if (ScoreManager.score > 500) {
+            if (Player.isPlaying)
             {
-                Spawn();
-                spawnTime = Time.time + timeBetweenSpawn;
+                if (Time.time > spawnTime)
+                {
+                    Spawn();
+                    spawnTime = Time.time + timeBetweenSpawn;
+                }
             }
         }
     }

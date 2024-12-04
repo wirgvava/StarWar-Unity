@@ -9,11 +9,11 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>ge.kdot.starWarIOS</string>
+	<string>ge.kdot.galaxyWarsIOS</string>
 	<key>PROJECT_ID</key>
 	<string>starwar-11dc1</string>
 	<key>STORAGE_BUCKET</key>
-	<string>starwar-11dc1.appspot.com</string>
+	<string>starwar-11dc1.firebasestorage.app</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -25,6 +25,8 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:825797255625:ios:c5572e2c344f37bc6b0818</string>
+	<string>1:825797255625:ios:2d6cdf859e4fb5d26b0818</string>
+	<key>ADMOB_APP_ID</key>
+	<string>ca-app-pub-7386410973532338~2974354255</string>
 </dict>
 </plist>

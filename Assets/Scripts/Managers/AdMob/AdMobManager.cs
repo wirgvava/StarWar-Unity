@@ -47,13 +47,13 @@ public class AdMobManager : MonoBehaviour
             });
     }
 
-    public static void ShowRewardedAd(Action<Reward> onAdCompleted, Action<string> onAdFailed)
+    public static void ShowRewardedAd(Action<RewardedAd> onAdCompleted, Action<string> onAdFailed)
     {
         if (rewardedAd != null && rewardedAd.CanShowAd())
         {
             rewardedAd.Show((Reward reward) =>
             {
-                onAdCompleted?.Invoke(reward);
+                onAdCompleted?.Invoke(rewardedAd);
             });
         }
         else

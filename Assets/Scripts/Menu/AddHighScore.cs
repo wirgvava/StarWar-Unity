@@ -30,4 +30,11 @@ public class AddHighScore : MonoBehaviour
             SFXSoundController.isErrorPresented = true;
         }
     }
+
+    public async void dismissView(){
+        SFXSoundController.buttonIsClicked = true;
+        menu.SetActive(true);
+        this.gameObject.SetActive(false);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
 }

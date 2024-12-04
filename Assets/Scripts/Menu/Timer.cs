@@ -16,10 +16,15 @@ using Unity.Notifications.iOS;
 public class Timer : MonoBehaviour
 {
     public TextMeshProUGUI timerText;
+    public GameObject errorMessage;
 
     // AD
     private RewardedAd rewardedAd;
 
+    void Start() 
+    {
+        errorMessage.SetActive(false);
+    }
     void Update()
     {
         if (GameController.PointOfHealth == 0 && GameController.healthIsEmpty)
@@ -27,7 +32,6 @@ public class Timer : MonoBehaviour
             LoadRewardedAd();
             StartHealthRecoveryTimer();
         }
-
 
         // Update the timer display if the timer is active
         if (GameController.TimerIsActive)
@@ -119,20 +123,23 @@ public class Timer : MonoBehaviour
     // BUTTON ACTION
     public void WatchAd()
     {
+        var isMusicEnabledState = GameController.IsMusicEnabled;
         SFXSoundController.buttonIsClicked = true;
+        GameController.IsMusicEnabled = false;
 
         AdMobManager.ShowRewardedAd(
-            (Reward reward) =>
+            (RewardedAd ad) =>
             {
+                GameController.IsMusicEnabled = isMusicEnabledState;
                 SFXSoundController.healthIsRestored = true;
                 GameController.PointOfHealth = 6;
                 GameController.TimerIsActive = false;
                 GameController.SaveGameData();
-
-                Debug.Log("Ad completed. User rewarded with: " + reward.Amount);
             },
             (string error) =>
             {
+                errorMessage.SetActive(true);
+                Invoke("HideMessage", 2.5f);
                 Debug.LogError("Failed to show ad: " + error);
             }
         );
@@ -152,5 +159,10 @@ public class Timer : MonoBehaviour
                 Debug.LogError("Failed to load rewarded ad: " + error);
             }
         );
+    }
+
+    private void HideMessage()
+    {
+        errorMessage.SetActive(false);
     }
 }

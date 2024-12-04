@@ -27,6 +27,7 @@ public class Market : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Player.isPlayable = false;
         player = GameObject.FindWithTag("Player").GetComponent<Player>();
         indexOfChoosenShip = GameController.ChoosenShip - 1;
         message.text = "";
@@ -105,16 +106,17 @@ public class Market : MonoBehaviour
         SFXSoundController.buttonIsClicked = true;
         
         AdMobManager.ShowRewardedAd(
-            (Reward reward) =>
+            (RewardedAd ad) =>
             {
                 isAdAlreadyShown = true;
                 watchAdButton.SetActive(false);
                 GameController.Money += 50;
                 GameController.SaveGameData();
-                Debug.Log("Ad completed. User rewarded with: " + reward.Amount);
             },
             (string error) =>
             {
+                message.text = "Ad is not loaded. \nPlease try again.";
+                Invoke("HideMessage", 2.5f);
                 Debug.LogError("Failed to show ad: " + error);
             }
         );
@@ -129,6 +131,7 @@ public class Market : MonoBehaviour
             GameController.SaveGameData();
             menu.SetActive(true);
             this.gameObject.SetActive(false);
+            Player.isPlayable = true;
         }
         else
         {
