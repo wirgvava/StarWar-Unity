@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using GoogleMobileAds.Api;
+using System.Threading.Tasks;
 
-public class GameController : MonoBehaviour
-{
+public class GameController : MonoBehaviour {
     // Stored Data
     public static int ChoosenShip;
     public static int PointOfHealth;
@@ -24,25 +24,33 @@ public class GameController : MonoBehaviour
     public AudioClip soundtrack;
     public AudioClip inGameSound;
 
-    public async void Start()
-    {
+    public async void Start() {
         AdMobInit();
+        // TEMP CODE
+        GameDataManager.DeleteGameData();
+        //
+        loadGame();
+    }
+
+    void Update() {
+        CheckForTimer();
+        SwitchClip();
+        CheckMusicAvailablity();
+    }
+
+    private async void loadGame() {
         GameData data = GameDataManager.LoadGame();
 
-        if (data != null)
-        {
+        if (data != null) {
             ChoosenShip = data.ChoosenShip;
 
             PointOfHealth = data.PointOfHealth;
             TimerIsActive = data.TimerIsActive;
             
             // Parse the stored string back to DateTime
-            if (DateTime.TryParse(data.TimerEndTime, null, System.Globalization.DateTimeStyles.RoundtripKind, out DateTime parsedDateTime))
-            {
+            if (DateTime.TryParse(data.TimerEndTime, null, System.Globalization.DateTimeStyles.RoundtripKind, out DateTime parsedDateTime)) {
                 TimerEndTime = parsedDateTime;
-            }
-            else
-            {
+            } else {
                 TimerEndTime = DateTime.MinValue;
                 Debug.LogError("Failed to parse TimerEndTime, setting to DateTime.MinValue");
             }
@@ -58,78 +66,51 @@ public class GameController : MonoBehaviour
         }
     }
 
-    void Update()
-    {
-        CheckForTimer();
-        SwitchClip();
-        CheckMusicAvailablity();
-    }
-
-    public static void SaveGameData()
-    {
+    public static void SaveGameData() {
         GameData data = new GameData(ChoosenShip, PointOfHealth, UserHighScore, Money,  TimerIsActive, TimerEndTime, IsSFXEnabled, IsMusicEnabled, UnlockedShips);
         GameDataManager.SaveGame(data);
     }
 
     // AUDIO
-    public void PlayMusic()
-    {
-        if (!backgroundMusic.isPlaying)
-        {
+    public void PlayMusic() {
+        if (!backgroundMusic.isPlaying) {
             backgroundMusic.Play();
         }
     }
 
-    public void StopMusic()
-    {
-        if (backgroundMusic.isPlaying)
-        {
+    public void StopMusic() {
+        if (backgroundMusic.isPlaying) {
             backgroundMusic.Pause();
         }
     }
 
-    private void SwitchClip()
-    {
-        if (Player.isPlaying)
-        {
+    private void SwitchClip() {
+        if (Player.isPlaying) {
             backgroundMusic.clip = inGameSound;
-        }
-        else if (Player.isGameOver)
-        {
+        } else if (Player.isGameOver) {
             backgroundMusic.clip = null;
-        }
-        else 
-        {
+        } else {
             backgroundMusic.clip = soundtrack;
         }
     }
 
-    private void CheckMusicAvailablity()
-    {
-        if (IsMusicEnabled)
-        {
+    private void CheckMusicAvailablity() {
+        if (IsMusicEnabled) {
             PlayMusic();
-        }
-        else
-        {
+        } else {
             StopMusic();
         }
     }
 
-
     // Timer
-    private void CheckForTimer()
-    {
-        if (PointOfHealth == 0 && !TimerIsActive)
-        {
+    private void CheckForTimer() {
+        if (PointOfHealth == 0 && !TimerIsActive) {
             healthIsEmpty = true;
         }
     }
 
-
     // ADMOB INIT
-    private void AdMobInit()
-    {
+    private void AdMobInit() {
         MobileAds.Initialize(initStatus => { 
             Debug.Log("AdMob is Initialized");
         });

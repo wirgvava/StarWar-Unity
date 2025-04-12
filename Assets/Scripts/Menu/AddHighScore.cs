@@ -6,17 +6,15 @@ using TMPro;
 using System.Linq;
 using UnityEngine.SceneManagement;
 
-public class AddHighScore : MonoBehaviour
-{
+public class AddHighScore : MonoBehaviour {
+
     public GameObject menu;
     public TMP_InputField nameField;
     private List<TopScore> topScores = Firestore.topScores;
 
     // Button action
-    public async void AddHighScoreButton()
-    {
-        if (!string.IsNullOrEmpty(nameField.text))
-        {
+    public async void AddHighScoreButton() {
+        if (!string.IsNullOrEmpty(nameField.text)) {
             SFXSoundController.buttonIsClicked = true;
             menu.SetActive(true);
             this.gameObject.SetActive(false);
@@ -24,9 +22,7 @@ public class AddHighScore : MonoBehaviour
             await firestore.AddTopScore(nameField.text, ScoreManager.score);
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             Debug.Log("Top Score added successfully");
-        }
-        else 
-        {
+        } else {
             SFXSoundController.isErrorPresented = true;
         }
     }

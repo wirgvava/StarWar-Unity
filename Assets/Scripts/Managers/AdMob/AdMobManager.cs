@@ -4,23 +4,21 @@ using UnityEngine;
 using GoogleMobileAds.Api;
 using System;
 
-public class AdMobManager : MonoBehaviour
-{
+public class AdMobManager : MonoBehaviour {
+
     #if UNITY_ANDROID
-    public static string _adUnitId = "ca-app-pub-7386410973532338/5893094814";
+    public static string _adUnitId = AdmobUnits.androidAdUnitId;
     #elif UNITY_IPHONE
-    public static string _adUnitId = "ca-app-pub-7386410973532338/7501689951";
+    public static string _adUnitId = AdmobUnits.iosAdUnitId;
     #else
-    public static string _adUnitId = "unused";
+    public static string _adUnitId = AdmobUnits.unused;
     #endif
 
     private static RewardedAd rewardedAd;
 
-    public static void LoadRewardedAd(Action<RewardedAd> onAdLoaded, Action<string> onAdFailed)
-    {
+    public static void LoadRewardedAd(Action<RewardedAd> onAdLoaded, Action<string> onAdFailed) {
         // Clean up the old ad before loading a new one.
-        if (rewardedAd != null)
-        {
+        if (rewardedAd != null) {
             rewardedAd.Destroy();
             rewardedAd = null;
         }
@@ -32,10 +30,8 @@ public class AdMobManager : MonoBehaviour
 
         // Load the rewarded ad
         RewardedAd.Load(_adUnitId, adRequest,
-            (RewardedAd ad, LoadAdError error) =>
-            {
-                if (error != null || ad == null)
-                {
+            (RewardedAd ad, LoadAdError error) => {
+                if (error != null || ad == null) {
                     Debug.LogError("Rewarded ad failed to load: " + error);
                     onAdFailed?.Invoke(error.ToString());
                     return;
@@ -47,17 +43,12 @@ public class AdMobManager : MonoBehaviour
             });
     }
 
-    public static void ShowRewardedAd(Action<RewardedAd> onAdCompleted, Action<string> onAdFailed)
-    {
-        if (rewardedAd != null && rewardedAd.CanShowAd())
-        {
-            rewardedAd.Show((Reward reward) =>
-            {
+    public static void ShowRewardedAd(Action<RewardedAd> onAdCompleted, Action<string> onAdFailed) {
+        if (rewardedAd != null && rewardedAd.CanShowAd()) {
+            rewardedAd.Show((Reward reward) => {
                 onAdCompleted?.Invoke(rewardedAd);
             });
-        }
-        else
-        {
+        } else {
             Debug.LogError("Ad is not loaded or cannot be shown.");
             onAdFailed?.Invoke("Ad is not loaded or cannot be shown.");
         }

@@ -4,8 +4,8 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using GoogleMobileAds.Api;
 
-public class GameOver : MonoBehaviour
-{
+public class GameOver : MonoBehaviour {
+
     public GameObject gameOverPanel;
     public GameObject description;
     public GameObject watchAdButton;
@@ -18,17 +18,14 @@ public class GameOver : MonoBehaviour
     // Ad
     private RewardedAd rewardedAd;
     
-    void Start()
-    {
+    void Start() {
         errorMessage.SetActive(false);
-        player = GameObject.FindGameObjectWithTag("Player");
+        player = GameObject.FindGameObjectWithTag(Tags.player);
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        if (Player.isGameOver && !isPresentedGameOverPanel)
-        {
+    void Update() {
+        if (Player.isGameOver && !isPresentedGameOverPanel) {
             isPresentedGameOverPanel = true;
             gameOverPanel.SetActive(true);
             customizeUI();
@@ -37,10 +34,8 @@ public class GameOver : MonoBehaviour
         }    
     }
 
-    void customizeUI()
-    {
-        if (isAdAlreadyUsed)
-        {
+    void customizeUI() {
+        if (isAdAlreadyUsed) {
             watchAdButton.SetActive(false);
             description.SetActive(false);
             restartButton.transform.position = new Vector3(gameOverPanel.transform.position.x, restartButton.transform.position.y, restartButton.transform.position.z);
@@ -48,8 +43,7 @@ public class GameOver : MonoBehaviour
     }
 
     // Button Actions
-    public void Restart()
-    {
+    public void Restart() {
         isPresentedGameOverPanel = false;
         SFXSoundController.buttonIsClicked = true;
         Player.isPlaying = false;
@@ -58,15 +52,13 @@ public class GameOver : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
-    public void WatchAdAndContinuePlaying()
-    {
+    public void WatchAdAndContinuePlaying() {
         var isMusicEnabledState = GameController.IsMusicEnabled;
         SFXSoundController.buttonIsClicked = true;
         GameController.IsMusicEnabled = false;
         
         AdMobManager.ShowRewardedAd(
-            (RewardedAd ad) =>
-            {
+            (RewardedAd ad) => {
                 ad.OnAdFullScreenContentClosed += () => {
                     GameController.IsMusicEnabled = isMusicEnabledState;
                     gameOverPanel.SetActive(false);
@@ -78,8 +70,7 @@ public class GameOver : MonoBehaviour
                     isAdAlreadyUsed = true;
                 };
             },
-            (string error) =>
-            {
+            (string error) => {
                 errorMessage.SetActive(true);
                 Invoke("HideMessage", 2.5f);
                 Debug.LogError("Failed to show ad: " + error);
@@ -87,23 +78,19 @@ public class GameOver : MonoBehaviour
         );
     }
 
-    private void LoadRewardedAd()
-    {
+    private void LoadRewardedAd() {
         AdMobManager.LoadRewardedAd(
-            (RewardedAd ad) =>
-            {
+            (RewardedAd ad) => {
                 rewardedAd = ad;
                 Debug.Log("Rewarded ad is loaded and ready to be shown.");
             },
-            (string error) =>
-            {
+            (string error) => {
                 Debug.LogError("Failed to load rewarded ad: " + error);
             }
         );
     }
 
-    private void HideMessage()
-    {
+    private void HideMessage() {
         errorMessage.SetActive(false);
     }
 }

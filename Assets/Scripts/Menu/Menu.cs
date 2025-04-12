@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class Menu : MonoBehaviour
-{
+public class Menu : MonoBehaviour {
+
     public GameObject menu;
     public TextMeshProUGUI userHighScore;
     public GameObject currentScore;
@@ -18,16 +18,13 @@ public class Menu : MonoBehaviour
 
     private List<TopScore> topScores = Firestore.topScores;
 
-    void Start()
-    {
+    void Start() {
         userHighScore.text = GameController.UserHighScore.ToString();
     }
     
     // Update is called once per frame
-    void Update()
-    {
-        if (Player.isPlaying)
-        {
+    void Update() {
+        if (Player.isPlaying) {
             menu.SetActive(false);
             banner.SetActive(false);
             inGameCanvas.SetActive(true);
@@ -36,9 +33,7 @@ public class Menu : MonoBehaviour
             Player.isPlayable = true;
             Player.isGameOver = false;
             Player.isAddedHighScoreToLeaderboard = false;
-        }
-        else 
-        {
+        } else {
             menu.SetActive(true);
             banner.SetActive(true);
             inGameCanvas.SetActive(false);
@@ -48,54 +43,44 @@ public class Menu : MonoBehaviour
         CheckForLeaderboardHighScore();
     }
 
-    void OnEnable()
-    {
-        if (ScoreManager.score > 0)
-        {
+    void OnEnable() {
+        if (ScoreManager.score > 0) {
             currentScore.SetActive(true);
             currentScoreText.text = ScoreManager.score.ToString();
         }
     }
 
     // Button actions 
-    public void OpenMarket()
-    {
+    public void OpenMarket() {
         SFXSoundController.buttonIsClicked = true;
         menu.SetActive(false);
         market.SetActive(true);
     }
 
-    public void OpenLeaderboard()
-    {
+    public void OpenLeaderboard() {
         SFXSoundController.buttonIsClicked = true;
         menu.SetActive(false);
         leaderboard.SetActive(true);
     }
 
-    public void OpenSettings()
-    {
+    public void OpenSettings() {
         SFXSoundController.buttonIsClicked = true;
         menu.SetActive(false);
         settings.SetActive(true);
     }
 
-    private void CheckForHighScore()
-    {
-        if (ScoreManager.score > GameController.UserHighScore)
-        {
+    private void CheckForHighScore() {
+        if (ScoreManager.score > GameController.UserHighScore) {
             GameController.UserHighScore = ScoreManager.score;
             GameController.SaveGameData();
             userHighScore.text = ScoreManager.score.ToString();
         }
     }
 
-    private void CheckForLeaderboardHighScore()
-    {
+    private void CheckForLeaderboardHighScore() {
         if (!Player.isPlaying && !Player.isAddedHighScoreToLeaderboard) {
-            foreach (TopScore topScore in topScores)
-            {
-                if (ScoreManager.score > topScore.Score) 
-                {
+            foreach (TopScore topScore in topScores) {
+                if (ScoreManager.score > topScore.Score) {
                     menu.SetActive(false);
                     addHighScorePanel.SetActive(true);
                     Player.isAddedHighScoreToLeaderboard = true;

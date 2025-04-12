@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpawnMeteors : MonoBehaviour
-{
+public class SpawnMeteors : MonoBehaviour {
+
     public GameObject meteor;
     public float maxX;
     public float minX;
@@ -11,13 +11,10 @@ public class SpawnMeteors : MonoBehaviour
     private float spawnTime;
 
     // Update is called once per frame
-    void Update()
-    {
+    void Update() {
         if (ScoreManager.score > 500) {
-            if (Player.isPlaying)
-            {
-                if (Time.time > spawnTime)
-                {
+            if (Player.isPlaying) {
+                if (Time.time > spawnTime) {
                     Spawn();
                     spawnTime = Time.time + timeBetweenSpawn;
                 }
@@ -25,10 +22,8 @@ public class SpawnMeteors : MonoBehaviour
         }
     }
 
-    void Spawn()
-    {
+    void Spawn() {
         float randomX = Random.Range(minX, maxX);
-
         Instantiate(meteor, transform.position + new Vector3(randomX, 0, 0), transform.rotation);
     }
 }

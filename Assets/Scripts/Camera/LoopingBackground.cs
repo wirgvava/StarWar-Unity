@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LoopingBackground : MonoBehaviour
-{
+public class LoopingBackground : MonoBehaviour {
+
     public float backgroundSpeed = 0.5f;
     public float speedIncrement = 0.1f;
     public float interval = 10f;
@@ -12,19 +12,14 @@ public class LoopingBackground : MonoBehaviour
     public Renderer backgroundRenderer;
 
     // Update is called once per frame
-    void Update()
-    {
-        if (Player.isPlaying)
-        {
+    void Update() {
+        if (Player.isPlaying) {
             // Start the coroutine only if it's not already running
-            if (!isCoroutineRunning)
-            {
+            if (!isCoroutineRunning) {
                 StartCoroutine(IncreaseSpeedOverTime());
                 isCoroutineRunning = true;
             }
-        } 
-        else
-        {
+        } else {
             // Reset the camera speed to the default value when the player stops playing
             backgroundSpeed = 0.5f;
             isCoroutineRunning = false;
@@ -34,10 +29,8 @@ public class LoopingBackground : MonoBehaviour
         backgroundRenderer.material.mainTextureOffset += new Vector2(0f, backgroundSpeed * Time.deltaTime);             
     }
 
-    IEnumerator IncreaseSpeedOverTime()
-    {
-        while (Player.isPlaying)
-        {
+    IEnumerator IncreaseSpeedOverTime() {
+        while (Player.isPlaying) {
             yield return new WaitForSeconds(interval);
             backgroundSpeed += speedIncrement;
         }

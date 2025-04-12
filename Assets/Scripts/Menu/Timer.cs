@@ -13,36 +13,32 @@ using Unity.Notifications.Android;
 using Unity.Notifications.iOS;
 #endif
 
-public class Timer : MonoBehaviour
-{
+public class Timer : MonoBehaviour {
+
     public TextMeshProUGUI timerText;
     public GameObject errorMessage;
 
     // AD
     private RewardedAd rewardedAd;
 
-    void Start() 
-    {
+    void Start() {
         errorMessage.SetActive(false);
     }
-    void Update()
-    {
-        if (GameController.PointOfHealth == 0 && GameController.healthIsEmpty)
-        {
+
+    void Update() {
+        if (GameController.PointOfHealth == 0 && GameController.healthIsEmpty) {
             LoadRewardedAd();
             StartHealthRecoveryTimer();
         }
 
         // Update the timer display if the timer is active
-        if (GameController.TimerIsActive)
-        {
+        if (GameController.TimerIsActive) {
             UpdateTimerText();
             CheckTimer();
         }
     }
 
-    private void StartHealthRecoveryTimer()
-    {
+    private void StartHealthRecoveryTimer() {
         GameController.healthIsEmpty = false;
         DateTime timerStartTime = DateTime.Now;
         GameController.TimerIsActive = true;
@@ -51,27 +47,21 @@ public class Timer : MonoBehaviour
         ScheduleHealthRestoredNotification();
     }
 
-    private void UpdateTimerText()
-    { 
+    private void UpdateTimerText() { 
         TimeSpan remainingTime = GameController.TimerEndTime - DateTime.Now;
 
-        if (remainingTime.TotalSeconds > 0)
-        {
+        if (remainingTime.TotalSeconds > 0) {
             timerText.text = string.Format("{0:00}:{1:00}:{2:00}",
                 remainingTime.Hours,
                 remainingTime.Minutes,
                 remainingTime.Seconds);
-        }
-        else
-        {
+        } else {
             timerText.text = "00:00:00";
         }
     }
 
-    private void CheckTimer()
-    {    
-        if (DateTime.Now >= GameController.TimerEndTime)
-        {
+    private void CheckTimer() {    
+        if (DateTime.Now >= GameController.TimerEndTime) {
             SFXSoundController.healthIsRestored = true;
             GameController.PointOfHealth = 6;
             GameController.TimerIsActive = false;
@@ -79,35 +69,30 @@ public class Timer : MonoBehaviour
         }
     }
 
-    private void ScheduleHealthRestoredNotification()
-    {
+    private void ScheduleHealthRestoredNotification() {
         // Android notification
         #if UNITY_ANDROID
-        if (Application.platform == RuntimePlatform.Android)
-        {
-            var notification = new AndroidNotification
-            {
-                Title = "Pew Pew",
-                Text = "🚀 Time to shoot 👾",
-                SmallIcon = "AppIcon_Android_Notification",
+        if (Application.platform == RuntimePlatform.Android) {
+            var notification = new AndroidNotification {
+                Title = Constants.notyTitle,
+                Text = Constants.notyBody,
+                SmallIcon = Constants.androidSmallIcon,
                 FireTime = DateTime.Now.AddHours(2)
             };
-            AndroidNotificationCenter.SendNotification(notification, "health_channel");
+            AndroidNotificationCenter.SendNotification(notification, Constants.androidNotyChannel);
         }
         #endif
 
         // iOS notification
         #if UNITY_IOS
-        if (Application.platform == RuntimePlatform.IPhonePlayer)
-        {
-            var notification = new iOSNotification
-            {
-                Identifier = "_health_full",
-                Title = "Pew Pew",
-                Body = "🚀 Time to shoot 👾",
+        if (Application.platform == RuntimePlatform.IPhonePlayer) {
+            var notification = new iOSNotification {
+                Identifier = Constants.iosNotyIdentifier,
+                Title = Constants.notyTitle,
+                Body = Constants.notyBody,
                 ShowInForeground = true,
                 ForegroundPresentationOption = (PresentationOption.Alert | PresentationOption.Sound),
-                SoundName = "notification.wav",
+                SoundName = Constants.soundName,
                 Trigger = new iOSNotificationTimeIntervalTrigger()
                 {
                     TimeInterval = new TimeSpan(2, 0, 0),
@@ -121,48 +106,54 @@ public class Timer : MonoBehaviour
 
 
     // BUTTON ACTION
-    public void WatchAd()
-    {
+    public void WatchAd() {
         var isMusicEnabledState = GameController.IsMusicEnabled;
         SFXSoundController.buttonIsClicked = true;
         GameController.IsMusicEnabled = false;
 
         AdMobManager.ShowRewardedAd(
-            (RewardedAd ad) =>
-            {
+            (RewardedAd ad) => {
                 GameController.IsMusicEnabled = isMusicEnabledState;
                 SFXSoundController.healthIsRestored = true;
                 GameController.PointOfHealth = 6;
                 GameController.TimerIsActive = false;
                 GameController.SaveGameData();
             },
-            (string error) =>
-            {
+            (string error) => {
                 errorMessage.SetActive(true);
-                Invoke("HideMessage", 2.5f);
+                InvokeMessage(2.5f);
                 Debug.LogError("Failed to show ad: " + error);
             }
         );
     }
 
     // Load Ad
-    private void LoadRewardedAd()
-    {
+    private void LoadRewardedAd() {
         AdMobManager.LoadRewardedAd(
-            (RewardedAd ad) =>
-            {
+            (RewardedAd ad) => {
                 rewardedAd = ad;
                 Debug.Log("Rewarded ad is loaded and ready to be shown.");
             },
-            (string error) =>
-            {
+            (string error) => {
                 Debug.LogError("Failed to load rewarded ad: " + error);
             }
         );
     }
 
-    private void HideMessage()
-    {
+    private void HideMessage() {
         errorMessage.SetActive(false);
+    }
+
+    private void InvokeMessage(float time) {
+        Invoke("HideMessage", time);
+    }
+
+    struct Constants {
+        public const string iosNotyIdentifier = "_health_full";
+        public const string androidNotyChannel = "health_channel";
+        public const string notyTitle = "Pew Pew";
+        public const string notyBody = "🚀 Time to shoot 👾";
+        public const string androidSmallIcon = "AppIcon_Android_Notification";
+        public const string soundName = "notification.wav";
     }
 }

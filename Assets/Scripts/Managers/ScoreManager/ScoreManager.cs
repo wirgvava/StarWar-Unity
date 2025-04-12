@@ -4,25 +4,26 @@ using UnityEngine;
 using TMPro;
 using System;
 
-public class ScoreManager : MonoBehaviour
-{
+public class ScoreManager : MonoBehaviour {
+
     public TextMeshProUGUI scoreText;
     public static int score = 0;
 
-    void Start()
-    {
+    void Start() {
         UpdateScoreText();
     }
 
     // Call this function whenever the score changes
-    public void AddScore(int points)
-    {
+    public void AddScore(int points) {
         score += points;
         UpdateScoreText();
     }
 
-    void UpdateScoreText()
-    {
-        scoreText.text = score.ToString();
+    public void BossHealth(int health) {
+        scoreText.text = "BOSS XP\n" + health.ToString();
+    }
+
+    void UpdateScoreText() {
+        scoreText.text = "Score\n" + score.ToString();
     }
 }

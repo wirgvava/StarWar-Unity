@@ -3,8 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameData
-{
+public class GameData {
     public int ChoosenShip;
     public int PointOfHealth;
     public bool TimerIsActive;
@@ -15,8 +14,7 @@ public class GameData
     public bool IsMusicEnabled;
     public List<int> UnlockedShips;
 
-    public GameData(int choosenShip, int pointOfHealth, int userHighScore, int money,  bool timerIsActive, DateTime timerEndTime, bool isSFXEnabled, bool isMusicEnabled, List<int> unlockedShips)
-    {
+    public GameData(int choosenShip, int pointOfHealth, int userHighScore, int money,  bool timerIsActive, DateTime timerEndTime, bool isSFXEnabled, bool isMusicEnabled, List<int> unlockedShips) {
         ChoosenShip = choosenShip;
         PointOfHealth = pointOfHealth;
         UserHighScore = userHighScore;

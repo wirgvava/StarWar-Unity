@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Net.NetworkInformation;
 using UnityEngine;
 
-public class Player : MonoBehaviour
-{
+public class Player : MonoBehaviour {
+
     public GameObject ship_1;
     public GameObject ship_2;
     public GameObject ship_3;
@@ -26,41 +26,31 @@ public class Player : MonoBehaviour
     public static bool isGameOver = false;
     public static bool isAddedHighScoreToLeaderboard = false;
 
-    void Start()
-    {
+    void Start() {
         ships = new GameObject[] { ship_1, ship_2, ship_3, ship_4,  ship_5, ship_6 };
         SetActiveCurrentShip();
     }
 
-    void Update()
-    {
-        if (isPlayable)
-        {
-            if (Input.touchCount > 0)
-            {
+    void Update() {
+        if (isPlayable) {
+            if (Input.touchCount > 0) {
                 Touch touch = Input.GetTouch(0);
                 Vector3 touchPos = Camera.main.ScreenToWorldPoint(touch.position);
                 touchPos.z = 0f;
 
-                if (touch.phase == TouchPhase.Began)
-                {
+                if (touch.phase == TouchPhase.Began) {
                     RaycastHit2D hit = Physics2D.Raycast(touchPos, Vector2.zero);
-                    if (hit.collider != null && hit.collider.CompareTag("Player"))
-                    {
+                    if (hit.collider != null && hit.collider.CompareTag(Tags.player)) {
                         isPlaying = true;
                         isDragging = true;
                         touchOffset = transform.position - touchPos;
                         touchOffset.z = 0f; // Maintain the same z-axis position
                         touchOffset.y += offsetY; // Adjust for offset above the finger
                     }
-                }
-                else if (touch.phase == TouchPhase.Moved && isDragging)
-                {
+                } else if (touch.phase == TouchPhase.Moved && isDragging) {
                     Vector3 newPos = touchPos + touchOffset;
                     transform.position = Vector3.MoveTowards(transform.position, newPos, speed * Time.deltaTime);
-                }
-                else if (touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled)
-                {
+                } else if (touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled) {
                     isDragging = false;
                 }
             }
@@ -69,17 +59,12 @@ public class Player : MonoBehaviour
         animator.enabled = !isPlaying;
     }
 
-    private void SetActiveCurrentShip()
-    {
+    private void SetActiveCurrentShip() {
         int index = 1;
-        foreach (GameObject ship in ships)
-        {
-            if (index == GameController.ChoosenShip)
-            {
+        foreach (GameObject ship in ships) {
+            if (index == GameController.ChoosenShip) {
                 ship.SetActive(true);
-            }
-            else 
-            {
+            } else {
                 ship.SetActive(false);
             }
 

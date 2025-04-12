@@ -6,8 +6,8 @@ using UnityEngine.UI;
 using TMPro;
 using System;
 
-public class Health : MonoBehaviour
-{
+public class Health : MonoBehaviour {
+
     public UnityEngine.UI.Image heart_1;
     public UnityEngine.UI.Image heart_2;
     public UnityEngine.UI.Image heart_3;
@@ -21,15 +21,12 @@ public class Health : MonoBehaviour
     public GameObject dragToPlayMessage;
 
     // Update is called once per frame
-    void Update()
-    {
+    void Update() {
         UpdateHealth();
     }
 
-    private void UpdateHealth()
-    {
-        switch (GameController.PointOfHealth)
-        {
+    private void UpdateHealth() {
+        switch (GameController.PointOfHealth) {
             case 0:
             heart_1.sprite = heart_empty;
             heart_2.sprite = heart_empty;

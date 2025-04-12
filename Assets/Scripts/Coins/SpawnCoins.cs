@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SocialPlatforms.Impl;
 
-public class SpawnCoins : MonoBehaviour
-{
+public class SpawnCoins : MonoBehaviour {
+
     public GameObject coin;
 
     public float maxX;
@@ -13,13 +13,10 @@ public class SpawnCoins : MonoBehaviour
     private float spawnTime;
     
     // Update is called once per frame
-    void Update()
-    {
-        if (ScoreManager.score > 200){
-            if (Player.isPlaying)
-            {
-                if (Time.time > spawnTime)
-                {
+    void Update() {
+        if (ScoreManager.score > 200) {
+            if (Player.isPlaying) {
+                if (Time.time > spawnTime) {
                     Spawn();
                     spawnTime = Time.time + timeBetweenSpawn;
                 }
@@ -27,10 +24,8 @@ public class SpawnCoins : MonoBehaviour
         }
     }
 
-    void Spawn()
-    {
+    void Spawn() {
         float randomX = Random.Range(minX, maxX);
-
         Instantiate(coin, transform.position + new Vector3(randomX, 0, 0), transform.rotation);
     }
 }

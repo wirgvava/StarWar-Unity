@@ -5,8 +5,8 @@ using UnityEngine;
 using TMPro;
 using GoogleMobileAds.Api;
 
-public class Market : MonoBehaviour
-{
+public class Market : MonoBehaviour {
+
     public GameObject menu;
     public TextMeshProUGUI moneyAmount;
     public GameObject buyButton;
@@ -25,25 +25,20 @@ public class Market : MonoBehaviour
     List<int> shipPrices = new List<int> { 0, 550, 850, 1000, 1500, 2000 };
 
     // Start is called before the first frame update
-    void Start()
-    {
+    void Start() {
         Player.isPlayable = false;
-        player = GameObject.FindWithTag("Player").GetComponent<Player>();
+        player = GameObject.FindWithTag(Tags.player).GetComponent<Player>();
         indexOfChoosenShip = GameController.ChoosenShip - 1;
-        message.text = "";
+        message.text = Messages.empty;
         buyButtonVectors = buyButton.transform.position;
         watchAdButonVectors = watchAdButton.transform.position;
         LoadRewardedAd();
     }
 
-    void Update()
-    {
-        if (GameController.UnlockedShips.Contains(indexOfChoosenShip + 1))
-        {
+    void Update() {
+        if (GameController.UnlockedShips.Contains(indexOfChoosenShip + 1)) {
             buyButton.SetActive(false);
-        }
-        else 
-        {
+        } else {
             buyButton.SetActive(true);
         }
 
@@ -53,47 +48,35 @@ public class Market : MonoBehaviour
     }
 
     // BUTTON ACTIONS
-    public void PreviousShip()
-    {
-        if (indexOfChoosenShip != 0)
-        {
+    public void PreviousShip() {
+        if (indexOfChoosenShip != 0) {
             player.ships[indexOfChoosenShip].SetActive(false); // turn off current ship before activate previous one
             player.ships[indexOfChoosenShip - 1].SetActive(true); // turn on previous ship
             indexOfChoosenShip -= 1;
             SFXSoundController.buttonIsClicked = true;
-        }
-        else
-        {
+        } else {
             SFXSoundController.isErrorPresented = true;
         }
     }
 
-    public void NextShip()
-    {
-        if (indexOfChoosenShip != player.ships.Length - 1)
-        {
+    public void NextShip() {
+        if (indexOfChoosenShip != player.ships.Length - 1) {
             player.ships[indexOfChoosenShip].SetActive(false); // turn off current ship before activate next one
             player.ships[indexOfChoosenShip + 1].SetActive(true); // turn on next ship
             indexOfChoosenShip += 1;
             SFXSoundController.buttonIsClicked = true;
-        }
-        else
-        {
+        } else {
             SFXSoundController.isErrorPresented = true;
         }
     }
 
     // Buttons 
-    public void BuyAction()
-    {
-        if (shipPrices[indexOfChoosenShip] > GameController.Money)
-        {
+    public void BuyAction() {
+        if (shipPrices[indexOfChoosenShip] > GameController.Money) {
             SFXSoundController.isErrorPresented = true;
-            message.text = "Not Enough Money";
-            Invoke("HideMessage", 1.0f);
-        }
-        else 
-        {
+            message.text = Messages.notEnoughMoney;
+            invokeMessage(1.0f);
+        } else {
             SFXSoundController.isBought = true;
             GameController.Money -= shipPrices[indexOfChoosenShip];
             GameController.UnlockedShips.Add(indexOfChoosenShip + 1);
@@ -101,56 +84,49 @@ public class Market : MonoBehaviour
         }
     }
 
-    public void WatchAdButton()
-    {
+    public void WatchAdButton() {
         SFXSoundController.buttonIsClicked = true;
         
         AdMobManager.ShowRewardedAd(
-            (RewardedAd ad) =>
-            {
+            (RewardedAd ad) => {
                 isAdAlreadyShown = true;
                 watchAdButton.SetActive(false);
                 GameController.Money += 50;
                 GameController.SaveGameData();
             },
-            (string error) =>
-            {
-                message.text = "Ad is not loaded. \nPlease try again.";
-                Invoke("HideMessage", 2.5f);
-                Debug.LogError("Failed to show ad: " + error);
+            (string error) => {
+                message.text = Messages.adError;
+                invokeMessage(2.5f);
             }
         );
     }
 
-    public void CloseButtonAction()
-    {
-        if (GameController.UnlockedShips.Contains(indexOfChoosenShip + 1))
-        {
+    public void CloseButtonAction() {
+        if (GameController.UnlockedShips.Contains(indexOfChoosenShip + 1)) {
             SFXSoundController.buttonIsClicked = true;
             GameController.ChoosenShip = indexOfChoosenShip + 1;
             GameController.SaveGameData();
             menu.SetActive(true);
             this.gameObject.SetActive(false);
             Player.isPlayable = true;
-        }
-        else
-        {
+        } else {
             SFXSoundController.isErrorPresented = true;
-            message.text = "Choose the ship you own";
-            Invoke("HideMessage", 1.0f);
+            message.text = Messages.chooseTheShip;
+            invokeMessage(1.0f);
         }
     }
 
     // METHODS
-    private void HideMessage()
-    {
-        message.text = "";
+    private void HideMessage() {
+        message.text = Messages.empty;
     }
 
-    private void ShipPrices()
-    {
-        switch (indexOfChoosenShip)
-        {
+    private void invokeMessage(float time) {
+        Invoke("HideMessage", time);
+    }
+
+    private void ShipPrices() {
+        switch (indexOfChoosenShip) {
             case 1:
             shipPrice.text = shipPrices[1].ToString();
             break;
@@ -174,65 +150,56 @@ public class Market : MonoBehaviour
     }
 
     // Load Ad
-    private void LoadRewardedAd()
-    {
+    private void LoadRewardedAd() {
         AdMobManager.LoadRewardedAd(
-            (RewardedAd ad) =>
-            {
+            (RewardedAd ad) => {
                 rewardedAd = ad;
                 Debug.Log("Rewarded ad is loaded and ready to be shown.");
             },
-            (string error) =>
-            {
+            (string error) => {
                 Debug.LogError("Failed to load rewarded ad: " + error);
             }
         );
     }
 
-     void customizeUI()
-    {
-        if (isAdAlreadyShown)
-        {
+     void customizeUI() {
+        if (isAdAlreadyShown) {
             watchAdButton.SetActive(false);
-        }
-        else
-        {
+        } else {
             watchAdButton.SetActive(true);
         }
 
 
-        if (watchAdButton.activeInHierarchy && buyButton.activeInHierarchy)
-        {
-            buyButton.transform.position = new Vector3
-            (
+        if (watchAdButton.activeInHierarchy && buyButton.activeInHierarchy) {
+            buyButton.transform.position = new Vector3(
                 buyButtonVectors.x - 250, 
                 buyButtonVectors.y, 
                 buyButtonVectors.z
             );
-            watchAdButton.transform.position = new Vector3
-            (
+            watchAdButton.transform.position = new Vector3(
                 watchAdButonVectors.x + 250, 
                 watchAdButonVectors.y, 
                 watchAdButonVectors.z
             );
-        }
-        else if (watchAdButton.activeInHierarchy && !buyButton.activeInHierarchy)
-        {
-            watchAdButton.transform.position = new Vector3
-            (
+        } else if (watchAdButton.activeInHierarchy && !buyButton.activeInHierarchy) {
+            watchAdButton.transform.position = new Vector3(
                 watchAdButonVectors.x,
                 watchAdButonVectors.y, 
                 watchAdButonVectors.z
             );
-        }
-        else if(!watchAdButton.activeInHierarchy && buyButton.activeInHierarchy)
-        {
-            buyButton.transform.position = new Vector3
-            (
+        } else if(!watchAdButton.activeInHierarchy && buyButton.activeInHierarchy) {
+            buyButton.transform.position = new Vector3(
                 buyButtonVectors.x,
                 buyButtonVectors.y, 
                 buyButtonVectors.z
             );
         }
+    }
+
+    struct Messages {
+        public const string empty = "";
+        public const string chooseTheShip = "Choose the ship you own";
+        public const string adError = "Ad is not loaded. \nPlease try again.";
+        public const string notEnoughMoney = "Not Enough Money";
     }
 }
