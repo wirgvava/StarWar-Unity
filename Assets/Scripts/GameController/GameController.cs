@@ -26,9 +26,6 @@ public class GameController : MonoBehaviour {
 
     public async void Start() {
         AdMobInit();
-        // TEMP CODE
-        GameDataManager.DeleteGameData();
-        //
         loadGame();
     }
 

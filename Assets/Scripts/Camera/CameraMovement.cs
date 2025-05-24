@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class CameraMovement : MonoBehaviour {
 
-    public static float cameraSpeed = 5f;
-    public float speedIncrement = 2f;
-    public float interval = 10f;
+    public static float cameraSpeed = 1.5f;
+    public float speedIncrement;
+    public float interval;
     private bool isCoroutineRunning = false;
 
     void Update() {
@@ -18,7 +18,7 @@ public class CameraMovement : MonoBehaviour {
             }
         } else {
             // Reset the camera speed to the default value when the player stops playing
-            cameraSpeed = 5f;
+            cameraSpeed = 1.5f;
             isCoroutineRunning = false;
             StopCoroutine(IncreaseSpeedOverTime()); // Stop the coroutine
         }

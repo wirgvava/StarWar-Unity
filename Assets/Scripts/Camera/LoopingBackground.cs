@@ -4,12 +4,18 @@ using UnityEngine;
 
 public class LoopingBackground : MonoBehaviour {
 
-    public float backgroundSpeed = 0.5f;
-    public float speedIncrement = 0.1f;
-    public float interval = 10f;
+    public float backgroundSpeed;
+    public float speedIncrement;
+    public float interval;
     private bool isCoroutineRunning = false;
 
+    private float inisialSpped;
+
     public Renderer backgroundRenderer;
+
+    void Start() {
+        inisialSpped = backgroundSpeed; 
+    }
 
     // Update is called once per frame
     void Update() {
@@ -21,7 +27,7 @@ public class LoopingBackground : MonoBehaviour {
             }
         } else {
             // Reset the camera speed to the default value when the player stops playing
-            backgroundSpeed = 0.5f;
+            backgroundSpeed = inisialSpped;
             isCoroutineRunning = false;
             StopCoroutine(IncreaseSpeedOverTime()); // Stop the coroutine
         }

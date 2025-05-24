@@ -6,7 +6,7 @@ public class CameraBackgroundColorChanger : MonoBehaviour {
 
     public Color startColor = new Color32(38, 32, 53, 255); // #262035
     public Color endColor = Color.black; // #000000
-    public float duration = 100f; // 100 seconds
+    public float duration;
 
     private Camera mainCamera;
 

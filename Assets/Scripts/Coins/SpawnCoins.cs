@@ -14,7 +14,7 @@ public class SpawnCoins : MonoBehaviour {
     
     // Update is called once per frame
     void Update() {
-        if (ScoreManager.score > 200) {
+        if (ScoreManager.score > 800) {
             if (Player.isPlaying) {
                 if (Time.time > spawnTime) {
                     Spawn();

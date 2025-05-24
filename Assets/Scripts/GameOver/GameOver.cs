@@ -49,6 +49,7 @@ public class GameOver : MonoBehaviour {
         Player.isPlaying = false;
         Player.isPlayable = true;
         Player.isGameOver = false;
+        SpawnBossMonsters.isActive = false;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
