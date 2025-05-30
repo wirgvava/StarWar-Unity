@@ -1,9 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
-using NUnit.Framework.Constraints;
-using UnityEditor.U2D.Aseprite;
 using UnityEngine;
-using Unity.VisualScripting;
 
 public class BossMonster : MonoBehaviour {
 

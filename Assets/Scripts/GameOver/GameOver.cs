@@ -72,6 +72,7 @@ public class GameOver : MonoBehaviour {
                 };
             },
             (string error) => {
+                GameController.IsMusicEnabled = isMusicEnabledState;
                 errorMessage.SetActive(true);
                 Invoke("HideMessage", 2.5f);
                 Debug.LogError("Failed to show ad: " + error);
